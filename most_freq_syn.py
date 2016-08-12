@@ -6,7 +6,7 @@ from TEP import TEP
 
 class MFS:
     def __init__(self, tepfile, freqfile):
-        self.freq_dict = {}
+        self.freq_dict = defaultdict(int)
         with open(freqfile) as f:
             for entry in f:
                 word, occur = entry.split()
