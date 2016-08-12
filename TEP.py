@@ -9,16 +9,15 @@ class TEP:
 		self.syn_dict = defaultdict(list)
 		with open(filename) as f:
 			for entry in f:
-				s_entry = entry.split()
-				seq = int(s_entry[0][:-1])-1
-				cat = s_entry[1][1:-1]
-				synset = [word.strip(",") for word in s_entry[2:]]
-				synset[0] = synset[0].strip("{")
+				s_entry = entry.split("{")
+				s_class = s_entry[0].split()
+				seq = int(s_class[0][:-1])-1
+				cat = s_class[1][1:-1]
+				synset_str, antset = s_entry[1].split("}")
+				synset = [word.strip(" ") for word in synset_str.split(",")]
 				ant = -1
-				if "<" in synset[-1]:
-					ant += int(synset[-1].strip("<").strip(">"))
-					synset = synset[:-1]
-				synset[-1] = synset[-1].strip("}")
+				if "<" in antset:
+					ant += int(antset.strip().strip("<").strip(">"))
 				for word in synset:
 					self.syn_dict[word].append(seq)
 				self.syn_group[seq] = (cat,synset,ant)
