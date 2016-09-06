@@ -1,13 +1,14 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import sys, getopt
 from collections import defaultdict
+import bz2
 
 class TEP:
 	def __init__(self, filename):
 		self.syn_group = {}
 		self.syn_dict = defaultdict(list)
-		with open(filename) as f:
+		with bz2.open(filename,"rt") as f:
 			for entry in f:
 				s_entry = entry.split("{")
 				s_class = s_entry[0].split()
