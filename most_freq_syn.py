@@ -1,13 +1,14 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import sys, getopt
 from collections import defaultdict, OrderedDict
 from TEP import TEP
+import bz2
 
 class MFS:
     def __init__(self, tepfile, freqfile):
         self.freq_dict = defaultdict(int)
-        with open(freqfile) as f:
+        with bz2.open(freqfile,"rt") as f:
             for entry in f:
                 word, occur = entry.split()
                 self.freq_dict[word] = int(occur)
@@ -27,7 +28,7 @@ class MFS:
         return syn
 
 def main(argv):
-    mfs = MFS("base_tep2.txt", "freq")
+    mfs = MFS("base_tep2.txt.bz2", "freq.bz2")
     for i in argv:
         print(mfs.most_freq_syn(i))
 	
