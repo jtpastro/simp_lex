@@ -1,11 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import sys, getopt
 from collections import defaultdict, OrderedDict
 from most_freq_syn import MFS
 
 def main():
-    mfs = MFS("base_tep2.txt", "freq")
+    mfs = MFS("base_tep2.txt.bz2", "freq.bz2")
     line_no, total, subs = 0,0,0
     for line in sys.stdin:
         line_no += 1
