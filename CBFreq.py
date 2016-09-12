@@ -28,8 +28,8 @@ class CBFreq:
                     f.readline()
 
 def main(argv):
-    mfs = CBFreq("cbfreq_tagged.txt")
-    print(mfs.freq_dict[argv[0]]) 
+    mfs = CBFreq(argv[0])
+    print(mfs.freq_dict[argv[1]]) 
 
 if __name__ == "__main__":
     main(sys.argv[1:])
