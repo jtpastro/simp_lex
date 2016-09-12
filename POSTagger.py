@@ -3,8 +3,12 @@
 import requests,sys
 from html.parser import HTMLParser
 
-#session = requests.Session()
 class POSTagger:
+    def analyze(self):
+        pass
+
+#session = requests.Session()
+class PalavraPOSTagger(POSTagger):
     def __init__(self,argv):
         cookies = {'VISLSessionID':'434001961b9d41df08406bb455784ff2', 'VISLLastLanguage':'pt', 'VISLUniqueID':'e698acd58e6bd5fd383f0a2096a399495c185618'}
         url = 'http://visl.sdu.dk/visl/pt/parsing/automatic/parse.php'
@@ -38,7 +42,7 @@ class PalavraParser(HTMLParser):
             self.response[-1] += data
 
 def main(argv):
-    print(POSTagger(argv).analyze())
+    print(PalavraPOSTagger(argv).analyze())
 
 if __name__ == "__main__":
     main(sys.argv[1:])
