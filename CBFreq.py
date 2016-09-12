@@ -8,7 +8,7 @@ import subprocess
 class CBFreq:
     def __init__(self, filename):
         self.freq_dict = defaultdict(int)
-        with open(filename,"rt") as f:
+        with bz2.open(filename,"rt") as f:
             while True:
                 line1 = f.readline()
                 if not line1:
