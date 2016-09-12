@@ -13,8 +13,11 @@ class CBFreq:
                 line1 = f.readline()
                 if not line1:
                     break
-                lemma, tags = line1.split('[')[1].split(']')
+                word, rest = line1.split('[')
+                word = word[:-1]
+                lemma, tags = rest.split(']')
                 lemma = lemma.split(',')
+                lemma.append(word)
                 cat = tags.split(',')[1]
                 try:
                     freq = int(f.readline().split(',')[0])
