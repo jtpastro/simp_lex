@@ -26,20 +26,22 @@ class PalavraParser(HTMLParser):
     def __init__(self):
         super(PalavraParser, self).__init__()
         self.startResponse = False
-        self.response=[""]
+        self.response=[[]]
     def handle_starttag(self, tag, attrs):
         if self.startResponse == False:
             if tag == 'dl':
                 self.startResponse=True
         elif tag == 'dt':
-            self.response[-1] = self.response[-1].split()
-            self.response.append("")
+#            self.response[-1] = self.response[-1].split()
+            self.response.append([])
     def handle_endtag(self, tag):
         if self.startResponse == True and tag == 'dl':
             self.startResponse = False
     def handle_data(self, data):
         if self.startResponse and data and self.response:
-            self.response[-1] += data
+            data = data.strip()
+            if data:
+                self.response[-1].append(data)
 
 def main(argv):
     print(PalavraPOSTagger(argv).analyze())
