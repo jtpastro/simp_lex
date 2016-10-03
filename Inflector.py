@@ -10,7 +10,7 @@ class Inflector:
 
 #session = requests.Session()
 class LXInflector(Inflector):
-    def __init__(self,argv):
+    def __init__(self, category):
         headers = {'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36'}
         if argv[1] == 'v':
             url = 'http://lxcenter.di.fc.ul.pt/services/online_conj/cgi-bin/flex.cgi'
