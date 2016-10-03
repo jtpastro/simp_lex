@@ -60,39 +60,38 @@ class NominalParser(HTMLParser):
                 self.response = data
 
 class VerbalParser(HTMLParser):
-    modes = defaultdict(int,
-            {   'Indicativo':1,
-                'Conjuntivo':2,
-                'Imperativo':3,
-                'Infinitivo':4,
-                'Gerúndio' : 5,
-                'Particípio Passado' : 6
-            })
-    tenses = defaultdict(int, 
-        {   'Presente' : 1,
-            'Pretérito Perfeito Composto' : 2,
-            'Pretérito Imperfeito' : 3,
-            'Pretérito Mais-Que-Perfeito Composto': 4,
-            'Pretérito Perfeito Simples' : 5,
-            'Pretérito Mais-Que-Perfeito Simples': 6,
-            'Pretérito Mais-Que-Perfeito Anterior': 7,
-            'Futuro do Presente Simples' : 8,
-            'Futuro do Presente Composto' : 9,
-            'Futuro do Pretérito Simples' : 10,
-            'Futuro do Pretérito Composto' : 11,
-            'Pretérito Perfeito' : 5,
-            'Pretérito Mais-Que-Perfeito': 6,
-            'Futuro Simples' : 10,
-            'Futuro Composto' : 11,
-            'Afirmativo' : 12,
-            'Negativo' : 13,
-            'Infinitivo Pessoal Presente' : 14,
-            'Infinitivo Pessoal Pretérito' : 15,
-            'Infinitivo Impessoal Presente' : 16,
-            'Infinitivo Impessoal Pretérito' : 17,
-            'Presente' : 1,
-            'Pretérito' : 6
-        })
+    modes = defaultdict(int, {
+	 'conjuntivo' : 2 ,
+	 'particípio passado' : 6 ,
+	 'gerúndio' : 5 ,
+	 'infinitivo' : 4 ,
+	 'imperativo' : 3 ,
+	 'indicativo' : 1 
+    })
+    tenses = defaultdict(int, {
+	 'pretérito' : 6 ,
+	 'infinitivo pessoal presente' : 14 ,
+	 'pretérito perfeito composto' : 2 ,
+	 'afirmativo' : 12 ,
+	 'presente' : 1 ,
+	 'futuro do pretérito composto' : 11 ,
+	 'pretérito imperfeito' : 3 ,
+	 'futuro composto' : 11 ,
+	 'futuro do presente composto' : 9 ,
+	 'pretérito perfeito simples' : 5 ,
+	 'pretérito mais-que-perfeito simples' : 6 ,
+	 'infinitivo pessoal pretérito' : 15 ,
+	 'infinitivo impessoal pretérito' : 17 ,
+	 'futuro simples' : 10 ,
+	 'futuro do presente simples' : 8 ,
+	 'infinitivo impessoal presente' : 16 ,
+	 'pretérito mais-que-perfeito anterior' : 7 ,
+	 'negativo' : 13 ,
+	 'pretérito mais-que-perfeito' : 6 ,
+	 'pretérito perfeito' : 5 ,
+	 'pretérito mais-que-perfeito composto' : 4 ,
+	 'futuro do pretérito simples' : 10 ,
+    })
     person = defaultdict(int,
         {   'eu' : 1,
             'tu' : 2,
@@ -131,7 +130,7 @@ class VerbalParser(HTMLParser):
             self.startResponse = False
         elif tag == 'tr' and self.curClass in ('verbo', 'composto', 'pronome'):
             for i in range(len(self.tense)):
-                self.response[(VerbalParser.modes[self.mode], VerbalParser.tenses[self.tense[i]], VerbalParser.person[(self.pronoun+[None])[0]])] = self.verb[i]
+                    self.response[(VerbalParser.modes[self.mode.lower()], VerbalParser.tenses[self.tense[i].lower()], VerbalParser.person[(self.pronoun+[None])[0]])] = self.verb[i]
             self.pronoun = []
             self.curClass = ''
             self.verb = []
