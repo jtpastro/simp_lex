@@ -10,11 +10,11 @@ class Inflector:
 
 #session = requests.Session()
 class LXInflector(Inflector):
-    def __init__(self, category):
+    def __init__(self, features):
         headers = {'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36'}
-        if argv[1] == 'v':
+        if features[1] == 'v':
             url = 'http://lxcenter.di.fc.ul.pt/services/online_conj/cgi-bin/flex.cgi'
-            data = {'lemma' : argv[0],
+            data = {'lemma' : features[0],
                      'type' : 'none',
                      'lang' : 'pt'
                      }
@@ -22,20 +22,28 @@ class LXInflector(Inflector):
             p = requests.get(url, cookies=cookies, headers=headers, params=data)
             parser = VerbalParser()
             parser.feed(p.text)
-            self.res = parser.response
-        elif argv[1] == 'cn' or argv[1] == 'adj':
+            self.res = parser.response[LXInflector.tags(features[2], features[3], features[4])]
+        elif features[1] == 'cn' or features[1] == 'adj':
             cookies = {'JSESSIONID':'B78A2BD39CC55193A078A637B295F6ED', }
             url = 'http://nlxserv.di.fc.ul.pt/lxinflector/pt/Flex_pt.jsp'
-            data = {    "categoria" : argv[1], #"cn", #adj
-                        "palavra" : argv[0],
+            data = {    "categoria" : features[1], #"cn", #adj
+                        "palavra" : features[0],
                         "submit" : "Flexionar",
-                        "genero" : argv[2],#"m", #f
-                        "numero" : argv[3] #"s" #p
+                        "genero" : features[2],#"m", #f
+                        "numero" : features[3] #"s" #p
                     }
             p = requests.post(url, cookies=cookies, headers=headers, data=data)
             parser = NominalParser()
             parser.feed(p.text)
             self.res = parser.response
+
+    def tags(mood, tense, person):
+        tags = {"1S":1, "1P":4, "2S":2, "2P":5, "3S":3, "3P":6, "1/3S":3, "0/1/3S":3,
+                "PR":1, "IMPF":3, "PS":5, "MQP":6, "FUT":8, "COND":10, "IND":1, "SUBJ":2, "IMP":3,
+                "INF":4, "PCP":6, "GER":5}
+        return (tags[mood] if mood in tags else 0, 
+                tags[tense] if tense in tags else 0,
+                tags[person] if person in tags else 0)
     
     def analyze(self):
         return self.res
@@ -69,7 +77,7 @@ class VerbalParser(HTMLParser):
 	 'indicativo' : 1 
     })
     tenses = defaultdict(int, {
-	 'pretérito' : 6 ,
+	 'pretérito' : 5 ,
 	 'infinitivo pessoal presente' : 14 ,
 	 'pretérito perfeito composto' : 2 ,
 	 'afirmativo' : 12 ,
@@ -82,7 +90,7 @@ class VerbalParser(HTMLParser):
 	 'pretérito mais-que-perfeito simples' : 6 ,
 	 'infinitivo pessoal pretérito' : 15 ,
 	 'infinitivo impessoal pretérito' : 17 ,
-	 'futuro simples' : 10 ,
+	 'futuro simples' : 8,
 	 'futuro do presente simples' : 8 ,
 	 'infinitivo impessoal presente' : 16 ,
 	 'pretérito mais-que-perfeito anterior' : 7 ,
